@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import Natbar from "./components/natbar";
+import {useEffect, useState} from "react";
+import Personajes from "./components/personajes";
 
 function App() {
+  const [characters, setCharacters] = useState([]);
+
+  const url="https://rickandmortyapi.com/api/character";
+
+  const consumirApi = (url) =>{
+  fetch(url)
+    .then(response => response.json())
+    .then(data => setCharacters(data.results))
+    .catch(error => console.log(error))
+  };
+
+  useEffect(()=>{
+    consumirApi(url);
+  },[])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Natbar
+        brand="RICK AND MORTY"
+      />
+      <div className="container mt-5">
+        <Personajes
+        characters= {characters}
+        />
+      </div>
+    </>
   );
 }
 
